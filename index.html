@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1e2a47">
+<title>Kuma Day</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/kuma.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="app-header">
+  <img src="icons/kuma.svg" alt="">
+  <h1>Kuma Day</h1>
+</header>
+
+<main class="container">
+
+  <!-- ==================== HOY ==================== -->
+  <section class="tab-panel" id="tab-hoy">
+
+    <div class="fecha-nav">
+      <button type="button" class="btn-icon" id="dia-anterior" aria-label="Día anterior">◀</button>
+      <input type="date" id="fecha-dia">
+      <button type="button" class="btn-icon" id="dia-siguiente" aria-label="Día siguiente">▶</button>
+    </div>
+    <p class="fecha-texto" id="fecha-texto"></p>
+
+    <div class="card">
+      <h2>Estado de ánimo</h2>
+      <div class="animo-opciones" id="animo-opciones"></div>
+      <textarea id="animo-nota" rows="2" placeholder="Nota (opcional): ¿cómo te sentiste hoy?"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>Trabajo</h2>
+      <div class="fila">
+        <label>Entrada <input type="time" id="trabajo-entrada"></label>
+        <label>Salida <input type="time" id="trabajo-salida"></label>
+      </div>
+      <p class="resultado" id="trabajo-horas"></p>
+    </div>
+
+    <div class="card">
+      <h2>Gimnasio</h2>
+      <label class="check-grande"><input type="checkbox" id="gym-fui"> Fui al gimnasio <span class="racha" id="gym-racha"></span></label>
+      <input type="text" id="gym-nota" placeholder="¿Qué hiciste? (pierna, pecho, cardio...)">
+      <label class="label-campo">Peso (kg)
+        <input type="number" id="peso" placeholder="Opcional" min="0" step="0.1" inputmode="decimal">
+      </label>
+    </div>
+
+    <div class="card">
+      <h2>Hábitos</h2>
+      <div id="habitos-lista"></div>
+      <p class="hint" id="habitos-vacio">No tienes hábitos. Agrégalos en Ajustes.</p>
+    </div>
+
+    <div class="card">
+      <h2>Dinero</h2>
+      <form id="form-movimiento">
+        <div class="tipo-toggle">
+          <label><input type="radio" name="tipo" value="gasto" checked> Gasto</label>
+          <label><input type="radio" name="tipo" value="ingreso"> Ingreso</label>
+        </div>
+        <input type="number" id="mov-monto" placeholder="Monto $" min="0" step="0.01" inputmode="decimal" required>
+        <select id="mov-categoria"></select>
+        <input type="text" id="mov-nota" placeholder="Nota (opcional)">
+        <button type="submit" class="btn">Agregar</button>
+      </form>
+      <p class="aviso" id="aviso-presupuesto" hidden></p>
+      <ul class="movimientos" id="movimientos-dia"></ul>
+    </div>
+
+    <div class="card" id="card-musica" hidden>
+      <h2>Música</h2>
+      <div class="sonando">
+        <img id="spot-portada" alt="" hidden>
+        <div class="sonando-info">
+          <strong id="spot-cancion"></strong>
+          <small id="spot-artista"></small>
+        </div>
+      </div>
+      <div class="controles">
+        <button type="button" class="btn-icon" id="spot-anterior" aria-label="Anterior">⏮</button>
+        <button type="button" class="btn-icon btn-play" id="spot-play" aria-label="Pausa o play">⏯</button>
+        <button type="button" class="btn-icon" id="spot-siguiente" aria-label="Siguiente">⏭</button>
+      </div>
+      <p class="resultado" id="spot-tiempo"></p>
+      <p class="hint" id="spot-mensaje"></p>
+    </div>
+
+  </section>
+
+  <!-- ==================== SEMANA ==================== -->
+  <section class="tab-panel" id="tab-semana" hidden>
+
+    <div class="fecha-nav">
+      <button type="button" class="btn-icon" id="semana-anterior" aria-label="Semana anterior">◀</button>
+      <span class="semana-rango" id="semana-rango"></span>
+      <button type="button" class="btn-icon" id="semana-siguiente" aria-label="Semana siguiente">▶</button>
+    </div>
+
+    <div class="card">
+      <h2>Dinero</h2>
+      <div class="totales">
+        <div><span class="label">Ingresos</span><span class="valor positivo" id="sem-ingresos"></span></div>
+        <div><span class="label">Gastos</span><span class="valor negativo" id="sem-gastos"></span></div>
+        <div><span class="label">Quedó</span><span class="valor" id="sem-saldo"></span></div>
+      </div>
+      <h3>Gastos por categoría</h3>
+      <div id="sem-categorias"></div>
+    </div>
+
+    <div class="card">
+      <h2>Resumen</h2>
+      <div class="totales">
+        <div><span class="label">Horas trabajo</span><span class="valor" id="sem-horas"></span></div>
+        <div><span class="label">Días de gym</span><span class="valor" id="sem-gym"></span></div>
+        <div><span class="label">Ánimo promedio</span><span class="valor" id="sem-animo"></span></div>
+      </div>
+      <p class="hint" id="sem-peso"></p>
+      <p class="hint" id="sem-musica"></p>
+      <h3>Hábitos</h3>
+      <ul class="lista-simple" id="sem-habitos"></ul>
+    </div>
+
+    <div class="card">
+      <h2>Día por día</h2>
+      <div class="tabla-scroll">
+        <table class="tabla-semana">
+          <thead><tr><th>Día</th><th>Ánimo</th><th>Horas</th><th>Gym</th><th>Ingresos</th><th>Gastos</th></tr></thead>
+          <tbody id="sem-dias"></tbody>
+        </table>
+      </div>
+      <p class="hint">Toca un día para abrirlo.</p>
+    </div>
+
+  </section>
+
+  <!-- ==================== MES ==================== -->
+  <section class="tab-panel" id="tab-mes" hidden>
+
+    <div class="fecha-nav">
+      <button type="button" class="btn-icon" id="mes-anterior" aria-label="Mes anterior">◀</button>
+      <span class="semana-rango" id="mes-nombre"></span>
+      <button type="button" class="btn-icon" id="mes-siguiente" aria-label="Mes siguiente">▶</button>
+    </div>
+
+    <div class="card">
+      <h2>Resumen del mes</h2>
+      <div class="totales">
+        <div><span class="label">Ingresos</span><span class="valor positivo" id="mes-ingresos"></span></div>
+        <div><span class="label">Gastos</span><span class="valor negativo" id="mes-gastos"></span></div>
+        <div><span class="label">Quedó</span><span class="valor" id="mes-saldo"></span></div>
+        <div><span class="label">Horas trabajo</span><span class="valor" id="mes-horas"></span></div>
+        <div><span class="label">Días de gym</span><span class="valor" id="mes-gym"></span></div>
+        <div><span class="label">Ánimo promedio</span><span class="valor" id="mes-animo"></span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Gastos por categoría</h2>
+      <div id="graf-categorias"></div>
+    </div>
+
+    <div class="card">
+      <h2>Ánimo por día</h2>
+      <div class="grafica" id="graf-animo"></div>
+    </div>
+
+    <div class="card">
+      <h2>Horas trabajadas por día</h2>
+      <div class="grafica" id="graf-horas"></div>
+    </div>
+
+    <div class="card">
+      <h2>Peso (kg)</h2>
+      <div class="grafica" id="graf-peso"></div>
+    </div>
+
+  </section>
+
+  <!-- ==================== AJUSTES ==================== -->
+  <section class="tab-panel" id="tab-ajustes" hidden>
+
+    <div class="card">
+      <h2>Hábitos</h2>
+      <ul class="lista-editable" id="cfg-habitos"></ul>
+      <form class="fila" id="form-habito">
+        <input type="text" id="nuevo-habito" placeholder="Nuevo hábito (ej. Tomar 2 L de agua)" required>
+        <button type="submit" class="btn">+</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Categorías de gasto</h2>
+      <ul class="lista-editable" id="cfg-cat-gasto"></ul>
+      <form class="fila" id="form-cat-gasto">
+        <input type="text" id="nueva-cat-gasto" placeholder="Nueva categoría" required>
+        <button type="submit" class="btn">+</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Presupuesto semanal</h2>
+      <p class="hint">Máximo que quieres gastar por semana en cada categoría. Déjalo vacío si no quieres límite.</p>
+      <div id="cfg-presupuestos"></div>
+    </div>
+
+    <div class="card">
+      <h2>Categorías de ingreso</h2>
+      <ul class="lista-editable" id="cfg-cat-ingreso"></ul>
+      <form class="fila" id="form-cat-ingreso">
+        <input type="text" id="nueva-cat-ingreso" placeholder="Nueva categoría" required>
+        <button type="submit" class="btn">+</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Spotify</h2>
+      <p class="hint">Para ver qué suena, cambiar canción y llevar tu tiempo de música (aproximado). Necesita Spotify Premium.</p>
+      <p class="aviso" id="spot-aviso-localhost" hidden></p>
+      <label class="label-campo">Client ID
+        <input type="text" id="spot-client-id" placeholder="Pégalo de developer.spotify.com" autocomplete="off" spellcheck="false">
+      </label>
+      <p class="hint">Dirección de regreso (Redirect URI) que debes registrar en Spotify:<br><code id="spot-redirect"></code></p>
+      <p class="resultado" id="spot-estado"></p>
+      <button type="button" class="btn" id="spot-conectar">Conectar con Spotify</button>
+      <button type="button" class="btn btn-secundario" id="spot-desconectar" hidden>Desconectar</button>
+    </div>
+
+    <div class="card">
+      <h2>Exportar a Excel</h2>
+      <p class="hint">Descarga archivos .csv que se abren directo en Excel.</p>
+      <button type="button" class="btn" id="btn-csv-movimientos">Ingresos y gastos</button>
+      <button type="button" class="btn" id="btn-csv-dias">Días (ánimo, trabajo, gym, hábitos, peso)</button>
+    </div>
+
+    <div class="card">
+      <h2>Respaldo</h2>
+      <p class="hint">Tus datos viven solo en este celular. Descarga un respaldo seguido y guárdalo en OneDrive.</p>
+      <p class="hint" id="ultimo-respaldo"></p>
+      <button type="button" class="btn" id="btn-exportar">Descargar respaldo</button>
+      <label class="btn btn-secundario">
+        Restaurar respaldo
+        <input type="file" id="input-importar" accept=".json,application/json" hidden>
+      </label>
+    </div>
+
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <button type="button" class="nav-btn active" data-tab="hoy">📅<span>Hoy</span></button>
+  <button type="button" class="nav-btn" data-tab="semana">📊<span>Semana</span></button>
+  <button type="button" class="nav-btn" data-tab="mes">📈<span>Mes</span></button>
+  <button type="button" class="nav-btn" data-tab="ajustes">⚙️<span>Ajustes</span></button>
+</nav>
+
+<script src="js/app.js"></script>
+</body>
+</html>

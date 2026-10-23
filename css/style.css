@@ -1,0 +1,270 @@
+/* Colores del Equipo 7: Naruto (naranja), Sasuke (azul marino), Sakura (rosa), Kakashi (gris plata). */
+
+:root {
+  --principal: #f26b1d;      /* Naruto */
+  --principal-claro: #fde8d9;
+  --sasuke: #1e2a47;
+  --sakura: #d9577f;
+  --texto: #1b2233;
+  --gris: #7b8592;           /* Kakashi */
+  --borde: #dfe3e8;
+  --fondo: #f5f6f8;
+  --tarjeta: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  color: var(--texto);
+  background: var(--fondo);
+  /* Espacio para la barra de abajo */
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+}
+
+.app-header {
+  background: var(--sasuke);
+  border-bottom: 4px solid var(--principal);
+  color: #fff;
+  padding: 14px 16px;
+  padding-top: calc(14px + env(safe-area-inset-top));
+}
+.app-header h1 { margin: 0; font-size: 1.2rem; }
+
+.container { max-width: 640px; margin: 0 auto; padding: 12px 16px; }
+
+.card {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.card h2 { margin: 0 0 10px; font-size: 1.05rem; }
+.card h3 { margin: 14px 0 6px; font-size: 0.95rem; color: var(--gris); }
+
+input[type="text"], input[type="number"], input[type="date"], input[type="time"], select, textarea {
+  width: 100%;
+  font: inherit;
+  padding: 10px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: #fff;
+  margin-top: 6px;
+}
+textarea { resize: vertical; }
+
+.fila { display: flex; gap: 10px; align-items: flex-end; }
+.fila > label, .fila > input { flex: 1; }
+.fila label { font-size: 0.9rem; color: var(--gris); }
+
+.btn {
+  display: inline-block;
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--principal);
+  color: #fff;
+  cursor: pointer;
+  margin-top: 8px;
+  text-align: center;
+}
+.btn-secundario { background: var(--principal-claro); color: var(--principal); }
+.fila .btn { margin-top: 0; flex: 0 0 auto; }
+#form-movimiento .btn { width: 100%; }
+
+.btn-icon {
+  font: inherit;
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.btn-borrar {
+  background: none;
+  border: none;
+  color: var(--gris);
+  font-size: 1rem;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.hint { color: var(--gris); font-size: 0.9rem; margin: 6px 0; }
+.resultado { margin: 8px 0 0; font-weight: 600; color: var(--principal); }
+
+/* Navegación de fechas */
+.fecha-nav { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.fecha-nav input[type="date"] { margin-top: 0; flex: 1; }
+.fecha-texto { text-align: center; color: var(--gris); margin: 8px 0 12px; }
+.semana-rango { flex: 1; text-align: center; font-weight: 600; }
+
+/* Ánimo */
+.animo-opciones { display: flex; justify-content: space-between; gap: 6px; }
+.animo-btn {
+  flex: 1;
+  font-size: 1.8rem;
+  padding: 6px 0;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0.45;
+}
+.animo-btn.seleccionado { opacity: 1; border-color: var(--principal); background: var(--principal-claro); }
+
+/* Checkboxes grandes para el dedo */
+.check-grande { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+.check-grande input { width: 22px; height: 22px; accent-color: var(--principal); }
+
+/* Dinero */
+.tipo-toggle { display: flex; gap: 8px; }
+.tipo-toggle label {
+  flex: 1;
+  text-align: center;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+}
+.tipo-toggle input { display: none; }
+.tipo-toggle label:has(input:checked) { background: var(--principal); color: #fff; border-color: var(--principal); }
+
+.movimientos { list-style: none; padding: 0; margin: 12px 0 0; }
+.movimientos li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--borde);
+}
+.mov-info { flex: 1; display: flex; flex-direction: column; }
+.mov-info small { color: var(--gris); }
+.mov-monto { font-weight: 600; }
+.movimientos .ingreso .mov-monto, .positivo { color: var(--sasuke); }
+.movimientos .gasto .mov-monto, .negativo { color: var(--sakura); }
+
+/* Semana */
+.totales { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.totales > div { display: flex; flex-direction: column; background: var(--fondo); border-radius: 8px; padding: 8px; }
+.totales .label { font-size: 0.8rem; color: var(--gris); }
+.totales .valor { font-weight: 700; font-size: 1rem; word-break: break-word; }
+
+.lista-simple, .lista-editable { list-style: none; padding: 0; margin: 0; }
+.lista-simple li, .lista-editable li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--borde);
+}
+.lista-editable { margin-bottom: 10px; }
+
+.tabla-scroll { overflow-x: auto; }
+.tabla-semana { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.tabla-semana th, .tabla-semana td { padding: 8px 4px; text-align: center; border-bottom: 1px solid var(--borde); white-space: nowrap; }
+.tabla-semana th { color: var(--gris); font-weight: 600; }
+.tabla-semana td:first-child { text-align: left; font-weight: 600; }
+.tabla-semana tbody tr { cursor: pointer; }
+.tabla-semana tr.es-hoy { background: var(--principal-claro); }
+
+/* Barra de abajo */
+.bottom-nav {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  background: var(--tarjeta);
+  border-top: 1px solid var(--borde);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.3rem;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  color: var(--gris);
+  cursor: pointer;
+}
+.nav-btn span { font-size: 0.75rem; }
+.nav-btn.active { color: var(--principal); font-weight: 700; }
+
+/* Encabezado con el osito */
+.app-header { display: flex; align-items: center; gap: 10px; }
+.app-header img { width: 36px; height: 36px; background: #fff; border-radius: 50%; padding: 3px; }
+
+/* Rachas */
+.racha { margin-left: auto; font-size: 0.8rem; font-weight: 600; color: var(--principal); }
+.label-campo { display: block; margin-top: 10px; font-size: 0.9rem; color: var(--gris); }
+
+/* Aviso de presupuesto */
+.aviso {
+  margin: 10px 0 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fbe3ea;
+  color: #8f2448;
+  font-size: 0.9rem;
+}
+
+/* Íconos de categoría */
+.icono-cat {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--texto);
+  border-radius: 50%;
+  color: var(--texto);
+  background: #fff;
+}
+.icono-cat svg { width: 20px; height: 20px; }
+.barra-nombre { display: inline-flex; align-items: center; gap: 8px; }
+.barra-nombre .icono-cat { width: 26px; height: 26px; border-width: 1.2px; }
+.barra-nombre .icono-cat svg { width: 15px; height: 15px; }
+
+/* Barras por categoría */
+.barra-fila { padding: 6px 0; }
+.barra-texto { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 4px; }
+.barra-fondo { height: 8px; background: var(--fondo); border-radius: 4px; overflow: hidden; }
+.barra { height: 100%; background: var(--sakura); border-radius: 4px; }
+.barra-fila.pasado .barra { background: #a3204b; }
+.barra-fila small { color: #a3204b; font-size: 0.8rem; }
+
+/* Presupuestos en Ajustes */
+.fila-presupuesto { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 0; }
+.fila-presupuesto input { width: 130px; margin-top: 0; }
+
+/* Gráficas */
+.svg-grafica { width: 100%; height: auto; display: block; touch-action: pan-y; }
+.svg-grafica .guia { stroke: var(--borde); stroke-width: 1; }
+.svg-grafica .eje { font-size: 9px; fill: var(--gris); }
+.svg-grafica .cursor { stroke: var(--gris); stroke-width: 1; stroke-dasharray: 3 3; }
+.grafica-tip { margin: 6px 0 0; font-size: 0.9rem; color: var(--texto); min-height: 1.3em; }
+
+/* Botones de Ajustes uno debajo del otro */
+#btn-csv-movimientos, #btn-csv-dias { display: block; width: 100%; }
+
+/* Música (Spotify) */
+.sonando { display: flex; align-items: center; gap: 12px; }
+.sonando img { width: 56px; height: 56px; border-radius: 6px; object-fit: cover; }
+.sonando-info { display: flex; flex-direction: column; min-width: 0; }
+.sonando-info strong, .sonando-info small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sonando-info small { color: var(--gris); }
+.controles { display: flex; justify-content: center; gap: 14px; margin-top: 12px; }
+.controles .btn-icon { font-size: 1.2rem; width: 52px; height: 44px; padding: 0; }
+.controles .btn-play { background: var(--principal); color: #fff; border-color: var(--principal); }
+code { font-size: 0.85rem; word-break: break-all; background: var(--fondo); padding: 2px 4px; border-radius: 4px; }
+#spot-conectar, #spot-desconectar { display: block; width: 100%; }
+#spot-conectar[hidden], #spot-desconectar[hidden] { display: none; }
